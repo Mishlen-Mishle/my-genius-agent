@@ -1,28 +1,15 @@
 name: Deploy to Juno
-
 on:
-  workflow_dispatch:
   push:
-    branches: [main]
-
+    branches:
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
     steps:
-      - name: Check out the repo
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          registry-url: "https://registry.npmjs.org"
-
-      - name: Install Dependencies
-        run: npm ci
-
+      - name: Install Juno CLI
+        run: npm install -g @junobuild/cli
       - name: Deploy to Juno
-        uses: junobuild/juno-action@main
-        with:
-          args: hosting deploy
+        run: juno deploy
